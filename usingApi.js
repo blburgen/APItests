@@ -7,7 +7,7 @@ const onFetchLegoClick = async () => {
 
 async function fetchLegoColors () {
     const response = await fetch("https://rebrickable.com/api/v3/lego/colors/?page_size=10&key=" + API_KEY);
-    const data = await response.json()
+    const data = await response.json();
     return data;
 }
 
@@ -21,12 +21,30 @@ function renderLegoColors(data) {
         >
             ${color.name}
         </span>`
-    ).join("")
+    ).join("");
 }
 
 /***** MOVIES *****/
 
-function onFetchMovieClick() {
-    const data = fetchMovie();
+async function onFetchMovieClick() {
+    const data = await fetchMovie();
     renderMovie(data);
+}
+
+async function fetchMovie() {
+    const response = await fetch(`http://www.omdbapi.com/?apikey=${MOVIE_API_KEY}&type=movie&t=Empire+Strikes+Back`);
+    const data = await response.json();
+    return data;
+}
+
+const movieContainer = document.getElementById("movie-container");
+function renderMovie(movie) {
+    console.log(movie);
+    movieContainer.innerHTML = `
+        <div>
+            <img class="img-thumbnail" src="${movie.Poster}">
+            <h3>${movie.Title}</h3>
+            <p>${movie.Plot}</p>
+        </div>
+    `
 }
